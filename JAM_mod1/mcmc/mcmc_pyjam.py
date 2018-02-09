@@ -223,7 +223,7 @@ def lnprob_massFollowLight(pars, returnType='lnprob', model=None):
     lnpriorValue = lnprior(parsDic, prior=model['prior'])
     inc = np.arccos(cosinc)
     JAM = model['JAM']
-    rmsModel = JAM.run(inc, beta0, a, Ra, ml=ml)
+    rmsModel = JAM.run(inc, beta0, a, Ra, ml=ml, alpha=model['alpha'])
     chi2 = (((rmsModel[model['goodbins']] - model['rms'][model['goodbins']]) /
              model['errRms'][model['goodbins']])**2).sum()
     if np.isnan(chi2):
@@ -263,7 +263,7 @@ def lnprob_spherical_gNFW(pars, returnType='lnprob', model=None):
     JAM = model['JAM']
     dh = util_dm.gnfw1d(10**logrho_s, rs, gamma)
     dh_mge3d = dh.mge3d()
-    rmsModel = JAM.run(inc, beta0, a, Ra, ml=ml, mge_dh=dh_mge3d)
+    rmsModel = JAM.run(inc, beta0, a, Ra, ml=ml, mge_dh=dh_mge3d, alpha=model['alpha'])
     chi2 = (((rmsModel[model['goodbins']] - model['rms'][model['goodbins']]) /
              model['errRms'][model['goodbins']])**2).sum()
     if np.isnan(chi2):
@@ -619,6 +619,7 @@ class mcmc:
         model['threads'] = galaxy.get('threads', 1)
         model['outfolder'] = galaxy.get('outfolder', './')
         model['fname'] = galaxy.get('fname', 'dump.dat')
+        model['alpha'] = galaxy.get('alpha', 1)
         # self.model[''] = self.
         # set cosinc and beta0 priors to aviod JAM crashing
         if self.shape == 'oblate':
