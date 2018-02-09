@@ -125,7 +125,7 @@ def _nuVlos2(t, tu,
     # tt = t
     # dtt_dt = 1
 
-    N = 10
+    N = 12
     f = lambda t:1/(1+np.exp(N*t))
     df_dt = lambda t:-N*np.exp(N*t)/(1+np.exp(N*t))**2
     tem = f(t) # tt as a function of t
